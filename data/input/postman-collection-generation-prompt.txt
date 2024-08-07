@@ -1,0 +1,969 @@
+First, Generate positive and negative test scenarios to validate that the API service defined in the OPEN API DOCUMENTATION is working as expected.
+
+The generated test scenarios should cover all possible permutations of field values, including valid and invalid data with the corresponding expected outcomes for
+all endpoints in the OPEN API DOCUMENTATION.
+
+Each test case scenario should include:
+- The method and endpoint being tested.
+- The host and base path of the endpoint.
+- The request body with valid or invalid field values.
+- The expected response code and response body fields.
+
+Ensure the test scenarios cover all valid permutations of field values (positive test cases) for each endpoint in the OPEN API DOCUMENTATION and that they have all parameters required to execute an API request if using the values in the test scenario.
+
+Here is an example Open API documentation snippet:
+"""
+openapi: 3.0.0
+info:
+  title: Newspaper API
+  description: API for accessing and managing newspaper articles, authors, and categories.
+  version: 1.0.0
+servers:
+  - url: https://api.newspaper.com/v1
+    description: Production server
+  - url: https://api.staging.newspaper.com/v1
+    description: Staging server
+
+paths:
+  /articles:
+    get:
+      summary: Get a list of articles
+      description: Retrieve a list of newspaper articles with optional filtering by category or date.
+      parameters:
+        - name: category
+          in: query
+          description: Filter articles by category.
+          schema:
+            type: string
+        - name: date
+          in: query
+          description: Filter articles by publication date (YYYY-MM-DD).
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: Limit the number of articles returned.
+          schema:
+            type: integer
+            default: 10
+        - name: offset
+          in: query
+          description: Number of articles to skip.
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: A list of articles
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  articles:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Article'
+        '400':
+          description: Invalid request parameters
+        '500':
+          description: Internal server error
+
+    post:
+      summary: Create a new article
+      description: Add a new article to the newspaper.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Article'
+      responses:
+        '201':
+          description: Article created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Article'
+        '400':
+          description: Invalid input
+        '500':
+          description: Internal server error
+
+  /articles/{articleId}:
+    get:
+      summary: Get an article by ID
+      description: Retrieve a specific article by its ID.
+      parameters:
+        - name: articleId
+          in: path
+          required: true
+          description: The ID of the article to retrieve.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: An article
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Article'
+        '404':
+          description: Article not found
+        '500':
+          description: Internal server error
+
+    put:
+      summary: Update an article
+      description: Update an existing article by its ID.
+      parameters:
+        - name: articleId
+          in: path
+          required: true
+          description: The ID of the article to update.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Article'
+      responses:
+        '200':
+          description: Article updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Article'
+        '400':
+          description: Invalid input
+        '404':
+          description: Article not found
+        '500':
+          description: Internal server error
+
+    delete:
+      summary: Delete an article
+      description: Delete an existing article by its ID.
+      parameters:
+        - name: articleId
+          in: path
+          required: true
+          description: The ID of the article to delete.
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Article deleted
+        '404':
+          description: Article not found
+        '500':
+          description: Internal server error
+
+  /authors:
+    get:
+      summary: Get a list of authors
+      description: Retrieve a list of authors.
+      responses:
+        '200':
+          description: A list of authors
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  authors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Author'
+        '500':
+          description: Internal server error
+
+    post:
+      summary: Create a new author
+      description: Add a new author to the database.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Author'
+      responses:
+        '201':
+          description: Author created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+        '400':
+          description: Invalid input
+        '500':
+          description: Internal server error
+
+  /authors/{authorId}:
+    get:
+      summary: Get an author by ID
+      description: Retrieve a specific author by their ID.
+      parameters:
+        - name: authorId
+          in: path
+          required: true
+          description: The ID of the author to retrieve.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: An author
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+        '404':
+          description: Author not found
+        '500':
+          description: Internal server error
+
+    put:
+      summary: Update an author
+      description: Update an existing author by their ID.
+      parameters:
+        - name: authorId
+          in: path
+          required: true
+          description: The ID of the author to update.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Author'
+      responses:
+        '200':
+          description: Author updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+        '400':
+          description: Invalid input
+        '404':
+          description: Author not found
+        '500':
+          description: Internal server error
+
+    delete:
+      summary: Delete an author
+      description: Delete an existing author by their ID.
+      parameters:
+        - name: authorId
+          in: path
+          required: true
+          description: The ID of the author to delete.
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Author deleted
+        '404':
+          description: Author not found
+        '500':
+          description: Internal server error
+
+  /categories:
+    get:
+      summary: Get a list of categories
+      description: Retrieve a list of article categories.
+      responses:
+        '200':
+          description: A list of categories
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  categories:
+                    type: array
+                    items:
+                      type: string
+        '500':
+          description: Internal server error
+
+components:
+  schemas:
+    Article:
+      type: object
+      required:
+        - title
+        - content
+        - authorId
+        - category
+        - publicationDate
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        content:
+          type: string
+        authorId:
+          type: string
+        category:
+          type: string
+        publicationDate:
+          type: string
+          format: date
+        tags:
+          type: array
+          items:
+            type: string
+
+    Author:
+      type: object
+      required:
+        - name
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        bio:
+          type: string
+        articles:
+          type: array
+          items:
+            type: string
+
+  responses:
+    NotFound:
+      description: Resource not found
+
+    InternalServerError:
+      description: Internal server error
+"""
+
+Here are some example test scenarios based on the provided Open API documentation:
+"""
+### Positive Test Scenarios
+
+1. **Method and Endpoint: GET /articles**
+   - **Host and Base Path**: https://api.newspaper.com/v1
+   - **Request Parameters**:
+     - `category`: "technology"
+     - `date`: "2024-08-01"
+     - `limit`: 5
+     - `offset`: 0
+   - **Expected Response**:
+     - **Code**: 200
+     - **Body**:
+       ```json
+       {
+         "articles": [
+           {"id": "1", "title": "Tech Article 1", "content": "Content 1", "authorId": "1", "category": "technology", "publicationDate": "2024-08-01", "tags": ["tech", "news"]},
+           ...
+         ]
+       }
+       ```
+
+2. **Method and Endpoint: POST /articles**
+   - **Host and Base Path**: https://api.newspaper.com/v1
+   - **Request Body**:
+     ```json
+     {
+       "title": "New Article",
+       "content": "Article content",
+       "authorId": "1",
+       "category": "news",
+       "publicationDate": "2024-08-07",
+       "tags": ["news"]
+     }
+     ```
+   - **Expected Response**:
+     - **Code**: 201
+     - **Body**:
+       ```json
+       {
+         "id": "123",
+         "title": "New Article",
+         "content": "Article content",
+         "authorId": "1",
+         "category": "news",
+         "publicationDate": "2024-08-07",
+         "tags": ["news"]
+       }
+       ```
+
+3. **Method and Endpoint: GET /articles/{articleId}**
+   - **Host and Base Path**: https://api.newspaper.com/v1
+   - **Request Parameters**:
+     - `articleId`: "1"
+   - **Expected Response**:
+     - **Code**: 200
+     - **Body**:
+       ```json
+       {
+         "id": "1",
+         "title": "Tech Article 1",
+         "content": "Content 1",
+         "authorId": "1",
+         "category": "technology",
+         "publicationDate": "2024-08-01",
+         "tags": ["tech", "news"]
+       }
+       ```
+
+4. **Method and Endpoint: PUT /articles/{articleId}**
+   - **Host and Base Path**: https://api.newspaper.com/v1
+   - **Request Parameters**:
+     - `articleId`: "1"
+   - **Request Body**:
+     ```json
+     {
+       "title": "Updated Article",
+       "content": "Updated content",
+       "authorId": "1",
+       "category": "technology",
+       "publicationDate": "2024-08-01",
+       "tags": ["updated", "tech"]
+     }
+     ```
+   - **Expected Response**:
+     - **Code**: 200
+     - **Body**:
+       ```json
+       {
+         "id": "1",
+         "title": "Updated Article",
+         "content": "Updated content",
+         "authorId": "1",
+         "category": "technology",
+         "publicationDate": "2024-08-01",
+         "tags": ["updated", "tech"]
+       }
+       ```
+
+5. **Method and Endpoint: DELETE /articles/{articleId}**
+   - **Host and Base Path**: https://api.newspaper.com/v1
+   - **Request Parameters**:
+     - `articleId`: "1"
+   - **Expected Response**:
+     - **Code**: 204
+     - **Body**: No content
+
+6. **Method and Endpoint: GET /authors**
+   - **Host and Base Path**: https://api.newspaper.com/v1
+   - **Request Parameters**: None
+   - **Expected Response**:
+     - **Code**: 200
+     - **Body**:
+       ```json
+       {
+         "authors": [
+           {"id": "1", "name": "Author 1", "bio": "Bio 1", "articles": ["1", "2"]},
+           ...
+         ]
+       }
+       ```
+
+7. **Method and Endpoint: POST /authors**
+   - **Host and Base Path**: https://api.newspaper.com/v1
+   - **Request Body**:
+     ```json
+     {
+       "name": "New Author",
+       "bio": "Author bio"
+     }
+     ```
+   - **Expected Response**:
+     - **Code**: 201
+     - **Body**:
+       ```json
+       {
+         "id": "123",
+         "name": "New Author",
+         "bio": "Author bio",
+         "articles": []
+       }
+       ```
+
+8. **Method and Endpoint: GET /authors/{authorId}**
+   - **Host and Base Path**: https://api.newspaper.com/v1
+   - **Request Parameters**:
+     - `authorId`: "1"
+   - **Expected Response**:
+     - **Code**: 200
+     - **Body**:
+       ```json
+       {
+         "id": "1",
+         "name": "Author 1",
+         "bio": "Bio 1",
+         "articles": ["1", "2"]
+       }
+       ```
+
+9. **Method and Endpoint: PUT /authors/{authorId}**
+   - **Host and Base Path**: https://api.newspaper.com/v1
+   - **Request Parameters**:
+     - `authorId`: "1"
+   - **Request Body**:
+     ```json
+     {
+       "name": "Updated Author",
+       "bio": "Updated bio"
+     }
+     ```
+   - **Expected Response**:
+     - **Code**: 200
+     - **Body**:
+       ```json
+       {
+         "id": "1",
+         "name": "Updated Author",
+         "bio": "Updated bio",
+         "articles": ["1", "2"]
+       }
+       ```
+
+10. **Method and Endpoint: DELETE /authors/{authorId}**
+    - **Host and Base Path**: https://api.newspaper.com/v1
+    - **Request Parameters**:
+      - `authorId`: "1"
+    - **Expected Response**:
+      - **Code**: 204
+      - **Body**: No content
+
+11. **Method and Endpoint: GET /categories**
+    - **Host and Base Path**: https://api.newspaper.com/v1
+    - **Request Parameters**: None
+    - **Expected Response**:
+      - **Code**: 200
+      - **Body**:
+        ```json
+        {
+          "categories": ["technology", "news", "sports"]
+        }
+        ```
+
+### Negative Test Scenarios
+
+1. **Method and Endpoint: GET /articles**
+   - **Host and Base Path**: https://api.newspaper.com/v1
+   - **Request Parameters**:
+     - `category`: "unknown-category"
+   - **Expected Response**:
+     - **Code**: 400
+     - **Body**:
+       ```json
+       {
+         "error": "Invalid category"
+       }
+       ```
+
+2. **Method and Endpoint: POST /articles**
+   - **Host and Base Path**: https://api.newspaper.com/v1
+   - **Request Body**:
+     ```json
+     {
+       "title": "",
+       "content": "Article content",
+       "authorId": "1",
+       "category": "news",
+       "publicationDate": "2024-08-07"
+     }
+     ```
+   - **Expected Response**:
+     - **Code**: 400
+     - **Body**:
+       ```json
+       {
+         "error": "Title is required"
+       }
+       ```
+
+3. **Method and Endpoint: GET /articles/{articleId}**
+   - **Host and Base Path**: https://api.newspaper.com/v1
+   - **Request Parameters**:
+     - `articleId`: "nonexistent-id"
+   - **Expected Response**:
+     - **Code**: 404
+     - **Body**:
+       ```json
+       {
+         "error": "Article not found"
+       }
+       ```
+
+4. **Method and Endpoint: PUT /articles/{articleId}**
+   - **Host and Base Path**: https://api.newspaper.com/v1
+   - **Request Parameters**:
+     - `articleId`: "nonexistent-id"
+   - **Request Body**:
+     ```json
+     {
+       "title": "Updated Article",
+       "content": "Updated content",
+       "authorId": "1",
+       "category": "technology",
+       "publicationDate": "2024-08-01"
+     }
+     ```
+   - **Expected Response**:
+     - **Code**: 404
+     - **Body**:
+       ```json
+       {
+         "error": "Article not found"
+       }
+       ```
+
+5. **Method and Endpoint: DELETE /articles/{articleId}**
+   - **Host and Base Path**: https://api.newspaper.com/v1
+   - **Request Parameters**:
+     - `articleId`: "nonexistent-id"
+   - **Expected Response**:
+     - **Code**: 404
+     - **Body**:
+       ```json
+       {
+         "error": "Article not found"
+       }
+       ```
+
+6. **Method and Endpoint: GET /authors/{authorId}**
+   - **Host and Base Path**: https
+
+://api.newspaper.com/v1
+   - **Request Parameters**:
+     - `authorId`: "nonexistent-id"
+   - **Expected Response**:
+     - **Code**: 404
+     - **Body**:
+       ```json
+       {
+         "error": "Author not found"
+       }
+       ```
+
+7. **Method and Endpoint: PUT /authors/{authorId}**
+   - **Host and Base Path**: https://api.newspaper.com/v1
+   - **Request Parameters**:
+     - `authorId`: "nonexistent-id"
+   - **Request Body**:
+     ```json
+     {
+       "name": "Updated Author",
+       "bio": "Updated bio"
+     }
+     ```
+   - **Expected Response**:
+     - **Code**: 404
+     - **Body**:
+       ```json
+       {
+         "error": "Author not found"
+       }
+       ```
+
+8. **Method and Endpoint: DELETE /authors/{authorId}**
+   - **Host and Base Path**: https://api.newspaper.com/v1
+   - **Request Parameters**:
+     - `authorId`: "nonexistent-id"
+   - **Expected Response**:
+     - **Code**: 404
+     - **Body**:
+       ```json
+       {
+         "error": "Author not found"
+       }
+       ```
+
+9. **Method and Endpoint: POST /authors**
+   - **Host and Base Path**: https://api.newspaper.com/v1
+   - **Request Body**:
+     ```json
+     {
+       "name": ""
+     }
+     ```
+   - **Expected Response**:
+     - **Code**: 400
+     - **Body**:
+       ```json
+       {
+         "error": "Name is required"
+       }
+       ```
+"""
+
+Use the OPEN API DOCUMENTATION below to generate the test scenarios:
+"""
+******document******
+"""
+
+Next, Generate a postman collection that can be imported into Postman that includes a valid request for the TEST SCENARIOS included.
+
+The following is an example Postman collection with endpoints and tests. The postman collection you generate must have the same values (_postman_id, name, description, schema) in the top-level info field:
+"""
+{
+	"info": {
+		"_postman_id": "41ef26a9-a6ef-4771-98c4-80fc628c9c26",
+		"name": "Animal Service Test Collection",
+		"description": "Collection to test Animal service endpoints",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Animal",
+			"item": [
+				{
+					"name": "Get valid animal",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/animals/00001",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"animals",
+								"00001"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get invalid animal",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 4XX\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/animals/99999",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"animals",
+								"99999"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Create Animal",
+			"item": [
+				{
+					"name": "Create valid animal",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"id\": \"00001\", \"zoo_id\": \"123\", \"group_id\": \"1\", \"sequence_value\": 55 }"
+						},
+						"url": {
+							"raw": "http://localhost:3000/animals",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"animals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create invalid animal",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 4XX\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"id\": \"00002\", \"zoo_id\": \"11\", \"group_id\": \"1\", \"sequence_value\": 55 }"
+						},
+						"url": {
+							"raw": "http://localhost:3000/animals",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"animals"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Update Animal",
+			"item": [
+				{
+					"name": "Update valid animal",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"id\": \"00001\", \"zoo_id\": \"123\", \"group_id\": \"1\", \"sequence_value\": 55 }"
+						},
+						"url": {
+							"raw": "http://localhost:3000/animals/00001",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"animals",
+								"00001"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update invalid animal",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 4XX\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"id\": \"00001\", \"zoo_id\": \"abc\", \"group_id\": \"1\", \"sequence_value\": 55 }"
+						},
+						"url": {
+							"raw": "http://localhost:3000/animals/00001",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"animals",
+								"00001"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
+"""
+
+Your response must include the Postman collection as a structured JSON file that can be imported into Postman. Your response must also include tests in the Postman collection to validate that the responses match the expected output for the test scenarios.
