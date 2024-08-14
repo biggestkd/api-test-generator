@@ -9,6 +9,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), 'helpers'))
 
 from helpers import generate_postman_collection
 from helpers import record_parameters
+from helpers import cleaner
 
 
 if __name__ == "__main__":
@@ -32,7 +33,10 @@ if __name__ == "__main__":
 
     print(f"Postman Collection Generation Execution time: {execution_time:.6f} seconds")
 
-    # Save the run metrics to a file
-    record_parameters.save_as_file(date_time_as_string, execution_time, user_prompt, system_prompt, "llama3.1", response)
+    # Clean the generated postman collection
+    cleaned_json_output = cleaner.clean_postman_output(response)
+
+    # Save the run information to a file
+    record_parameters.save_as_file(date_time_as_string, execution_time, user_prompt, system_prompt, "llama3.1", response, cleaned_json_output)
 
     print("Finished")
