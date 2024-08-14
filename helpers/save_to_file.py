@@ -1,10 +1,10 @@
 import os
 
 
-def save_to_file(datetime, file_path, content):
+def save_to_file(date_and_time, file_path, content):
 
     try:
-        os.mkdir("data/output/" + datetime)
+        os.mkdir("data/output/" + date_and_time)
     except FileExistsError:
         pass
 

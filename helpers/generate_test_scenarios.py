@@ -8,7 +8,7 @@ def generate(datetime):
     documentation = load_file.load_file("/Users/kevindowdy/Library/CloudStorage/OneDrive-EY/Desktop/Software Applications/auto-test-generation-script/data/input/open-api-documenation.yml")
     decorated_prompt = prompt.replace("******document******", documentation)
     # print(decorated_prompt)
-    response = send_prompt.llama3(decorated_prompt)
+    response = send_prompt.generate(decorated_prompt)
     save_to_file.save_to_file(datetime, "/Users/kevindowdy/Library/CloudStorage/OneDrive-EY/Desktop/Software Applications/auto-test-generation-script/data/output/" + str(datetime) + "/test_scenarios", response)
 
 
