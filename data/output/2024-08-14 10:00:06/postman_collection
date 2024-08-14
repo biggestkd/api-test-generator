@@ -1,0 +1,182 @@
+Here is the well-formatted JSON code snippet based on your specification:
+
+```json
+{
+    "info": {
+        "_postman_id": null,
+        "name": "Animal API",
+        "schema": "",
+        "version": "1.0"
+    },
+    "item": [
+        {
+            "name": "Get animals",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                    "mode": "raw",
+                    "raw": ""
+                },
+                "url": {
+                    "raw": "http://localhost:3000/animals",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3000",
+                    "path": [
+                        "animals"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Get animal by id",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                    "mode": "raw",
+                    "raw": ""
+                },
+                "url": {
+                    "raw": "http://localhost:3000/animals/:id",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3000",
+                    "path": [
+                        "animals",
+                        ":id"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Create animal",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{ \"id\": \"00001\", \"zoo_id\": \"123\", \"group_id\": \"1\", \"sequence_value\": 55 }"
+                },
+                "url": {
+                    "raw": "http://localhost:3000/animals",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3000",
+                    "path": [
+                        "animals"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Create invalid animal",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{ \"id\": \"00002\", \"zoo_id\": \"11\", \"group_id\": \"1\", \"sequence_value\": 55 }"
+                },
+                "url": {
+                    "raw": "http://localhost:3000/animals",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3000",
+                    "path": [
+                        "animals"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Update Animal",
+            "item": [
+                {
+                    "name": "Update valid animal",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{ \"id\": \"00001\", \"zoo_id\": \"123\", \"group_id\": \"1\", \"sequence_value\": 55 }"
+                        },
+                        "url": {
+                            "raw": "http://localhost:3000/animals/00001",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "animals",
+                                "00001"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update invalid animal",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{ \"id\": \"00001\", \"zoo_id\": \"abc\", \"group_id\": \"1\", \"sequence_value\": 55 }"
+                        },
+                        "url": {
+                            "raw": "http://localhost:3000/animals/00001",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "3000",
+                            "path": [
+                                "animals",
+                                "00001"
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        }
+    ]
+}
+```
+
+This code defines a Postman collection with several test scenarios for the Animal API. Each scenario includes a request (GET, POST, PUT) and expected response.
+
+To use this code in Postman:
+
+1. Create a new collection in Postman.
+2. Import the above JSON into the collection by selecting "Import" from the collection menu and then clicking on the file icon next to it.
+3. Run each scenario individually to test the API endpoints.
