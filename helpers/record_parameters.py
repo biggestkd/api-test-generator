@@ -18,4 +18,6 @@ def save_as_file(date_and_time, execution_time, user_prompt, system_prompt, mode
     save_to_file.save_to_file(date_and_time, "/Users/kevindowdy/Library/CloudStorage/OneDrive-EY/Desktop/Software Applications/auto-test-generation-script/data/output/" + str(date_and_time) + "/metrics", metrics)
 
     # Save the cleaned json to a file
-    save_to_file.save_to_file(date_and_time, "/Users/kevindowdy/Library/CloudStorage/OneDrive-EY/Desktop/Software Applications/auto-test-generation-script/data/output/" + str(date_and_time) + "/json_output", json_output)
+    file_path = "/Users/kevindowdy/Library/CloudStorage/OneDrive-EY/Desktop/Software Applications/auto-test-generation-script/data/output/" + str(date_and_time) + "/json_output"
+    print(f"Path to Postman Collection : {file_path}")
+    save_to_file.save_to_file(date_and_time, file_path, json_output)

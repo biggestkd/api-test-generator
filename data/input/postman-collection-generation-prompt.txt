@@ -966,4 +966,4 @@ The following is an example Postman collection with endpoints and tests. The pos
 }
 """
 
-Your response must include the Postman collection as a structured JSON file that can be imported into Postman. Your response must also include tests in the Postman collection to validate that the responses match the expected output for the test scenarios.
+Your response must include the Postman collection as a structured JSON file that can be imported into Postman. Your response must also include tests in the Postman collection to validate that the responses match the expected output for the test scenarios.  Do not include any other text or explanations in responses.

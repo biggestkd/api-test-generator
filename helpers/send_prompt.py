@@ -20,6 +20,6 @@ def generate(user_prompt, system_prompt, model_name):
     }
 
     response_from_model = requests.post(url, headers=headers, json=data)
-    print(response_from_model.json())
+    # print(response_from_model.json())
     return response_from_model.json()["message"]["content"]
 
