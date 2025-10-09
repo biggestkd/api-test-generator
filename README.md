@@ -1,5 +1,7 @@
 # api-test-generator
 
+Tool to auto-generate postman collection from OpenAPI Specification (OAS) documentation that can be used to for testing APIs. The script uses python to feed the data to the local llm hosted by ollama.
+
 # Pre-requisites
 - Python 3.6 or higher
 - [postman cli or newman](https://learning.postman.com/docs/postman-cli/postman-cli-installation/)
